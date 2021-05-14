@@ -12,8 +12,12 @@ def run_query(url, query):
         raise Exception("Query failed to run by returning code of {}. {}".format(
             request.status_code, query))
 
+def convert_to_json(dict):
+    return json.dumps(dict)
 
-data_to_fetch = {'url': 'https://countries.trevorblades.com/', 'query': """
+data_to_fetch = {
+'url': 'https://countries.trevorblades.com/',
+'query': """
 {
   continents{
     code
@@ -25,9 +29,15 @@ data_to_fetch = {'url': 'https://countries.trevorblades.com/', 'query': """
 }
 """}
 
+def add_json_to_file(data):
+    with open('data.json','w') as f:
+        f.write(data)
 
 def main():
-    print(run_query(data_to_fetch['url'],data_to_fetch['query']))
+    queried_data = run_query(data_to_fetch['url'],data_to_fetch['query'])
+    queried_json = convert_to_json(queried_data)
+    add_json_to_file(queried_json)
+
 
 
 if __name__ == "__main__":
